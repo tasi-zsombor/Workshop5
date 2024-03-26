@@ -1,4 +1,4 @@
-import { Value } from "../types";
+import { NodeState, Value } from "../types";
 import { node } from "./node";
 
 export async function launchNodes(
@@ -24,6 +24,14 @@ export async function launchNodes(
     nodesStates[index] = true;
   }
 
+    // Initialize initial states for each node
+    const initialState: NodeState = {
+      killed: false,
+      x: null,
+      decided: null,
+      k: null
+    };
+
   // launch nodes
   for (let index = 0; index < N; index++) {
     const newPromise = node(
@@ -33,7 +41,8 @@ export async function launchNodes(
       initialValues[index],
       faultyList[index],
       nodesAreReady,
-      setNodeIsReady
+      setNodeIsReady,
+      initialState
     );
     promises.push(newPromise);
   }
